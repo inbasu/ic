@@ -16,7 +16,7 @@ function ItemRow({ item }: { item: Item }) {
         <TableRow>
             {item.attrs.map((attr) => {
                 if (cols.get(attr.name)) {
-                    return (<TableCell>{attr.values[0]?.label}</TableCell>)
+                    return (<TableCell>{attr.values[0]?.label ? attr.values[0]?.label : "null"}</TableCell>)
                 }
             })}
         </TableRow>
@@ -41,7 +41,7 @@ export default function SearchResultTable() {
     }, [])
 
     return (
-        <TableContainer component={Paper} >
+        <TableContainer component={Paper} sx={{ paddingTop: "5px", boxShadow: "none" }}>
             <Table size="small" sx={{ width: "100%" }}>
                 {items.map((item) => { return (<ItemRow item={item} />) })}
             </Table>

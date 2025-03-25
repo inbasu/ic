@@ -54,7 +54,7 @@ export default function CollumnFilter() {
             </Button>
             {open &&
                 <Paper
-                    sx={{ position: "absolute", width: "400px", padding: "5px", marginTop: "5px", left: 'calc(90% - 310px)', border: 2 }}>
+                    sx={{ position: "absolute", width: "400px", padding: "5px", marginTop: "5px", left: 'calc(90% - 310px)', border: 1 }}>
                     <CollumnList />
                 </Paper>
             }

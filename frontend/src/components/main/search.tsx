@@ -24,8 +24,9 @@ function AdvancedSearch({ querry, set }: { querry: string, set: Dispatch }) {
     return (
         <TextField
             id="advanced-search-bar"
+            sx={{ width: "80%" }}
             size="small"
-            variant="outlined"
+            variant="standard"
             value={querry}
             onChange={(event: ChangeEvent<HTMLInputElement>) => { set(event.target.value) }}
         />
@@ -47,7 +48,7 @@ export default function Search() {
 
 
     return (
-        <Box sx={{ flexGrow: 1 }}>
+        <Box sx={{ flexGrow: 1, flexWrap: "nowrap" }}>
             {isAdvanced ?
                 <AdvancedSearch querry={querry} set={setQuerry} /> :
                 <BaseSearch />}
