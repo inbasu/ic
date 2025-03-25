@@ -7,7 +7,7 @@ import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 
 import axios from "axios";
-import { ItemListContext } from "../../data/context";
+import { ItemListContext, LoadingContext } from "../../data/context";
 
 
 function validIql(iql: string): boolean {
@@ -40,17 +40,25 @@ function AdvancedSearch({ querry, set }: { querry: string, set: Dispatch }) {
 
 export default function Search() {
     const [_items, setItems] = React.useContext(ItemListContext);
+    const [_loading, setLoading] = React.useContext(LoadingContext);
     const [isAdvanced, setIsAdvanced] = React.useState<boolean>(false)
     const [valid, setValid] = React.useState<boolean>(false)
     const [querry, setQuerry] = React.useState<string>('')
 
 
     React.useEffect(() => {
-        setValid((!isAdvanced || validIql(querry)))
+        setValid(true)
     }, [isAdvanced, querry])
 
     const handleSearchRequest = () => {
-        axios.post("http://127.0.0.1:8000", { querry: querry }).then((respons) => { setItems(respons.data.items ? respons.data.items : []) })
+        setLoading(true);
+        axios.post("http://127.0.0.1:8000/", { querry: querry })
+            .then((respons) => {
+                setItems(respons.data.items ? respons.data.items : []);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
     }
 
     return (
