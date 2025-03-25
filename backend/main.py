@@ -4150,6 +4150,6 @@ d = [
 ]
 
 
-@app.get("/")
+@app.post("/")
 def get_list():
     return {"items": d}

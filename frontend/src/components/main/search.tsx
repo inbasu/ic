@@ -1,9 +1,13 @@
+import * as React from 'react';
+// MUI
 import TextField from "@mui/material/TextField"
 import Button from "@mui/material/Button"
 import SearchIcon from '@mui/icons-material/Search';
-import { ChangeEvent, useEffect, useState } from "react"
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
+
+import axios from "axios";
+import { ItemListContext } from "../../data/context";
 
 
 function validIql(iql: string): boolean {
@@ -28,24 +32,26 @@ function AdvancedSearch({ querry, set }: { querry: string, set: Dispatch }) {
             size="small"
             variant="standard"
             value={querry}
-            onChange={(event: ChangeEvent<HTMLInputElement>) => { set(event.target.value) }}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => { set(event.target.value) }}
         />
     )
 }
 
 
 export default function Search() {
-    const [isAdvanced, setIsAdvanced] = useState<boolean>(false)
-    const [valid, setValid] = useState<boolean>(false)
-    const [querry, setQuerry] = useState<string>('')
+    const [_items, setItems] = React.useContext(ItemListContext);
+    const [isAdvanced, setIsAdvanced] = React.useState<boolean>(false)
+    const [valid, setValid] = React.useState<boolean>(false)
+    const [querry, setQuerry] = React.useState<string>('')
 
 
-    useEffect(() => {
+    React.useEffect(() => {
         setValid((!isAdvanced || validIql(querry)))
     }, [isAdvanced, querry])
 
-
-
+    const handleSearchRequest = () => {
+        axios.post("http://127.0.0.1:8000", { querry: querry }).then((respons) => { setItems(respons.data.items ? respons.data.items : []) })
+    }
 
     return (
         <Box sx={{ flexGrow: 1, flexWrap: "nowrap" }}>
@@ -53,7 +59,7 @@ export default function Search() {
                 <AdvancedSearch querry={querry} set={setQuerry} /> :
                 <BaseSearch />}
 
-            <IconButton disabled={!valid} ><SearchIcon /></IconButton>
+            <IconButton disabled={!valid} onClick={handleSearchRequest}><SearchIcon /></IconButton>
             <Button onClick={() => setIsAdvanced(!isAdvanced)} variant="text" size="small">
                 {isAdvanced ? "Базовый" : "Расширенный"}
             </Button>
