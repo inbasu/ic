@@ -24,9 +24,11 @@ function BaseSearch() {
         />)
 }
 
-function AdvancedSearch({ querry, set }: { querry: string, set: Dispatch, enterHandler: Function }) {
+function AdvancedSearch({ querry, set, enterHandler }: { querry: string, set: Dispatch, enterHandler: Function }) {
+    const [loading, _setLoading] = React.useContext(LoadingContext);
     return (
         <TextField
+            disabled={loading}
             id="advanced-search-bar"
             sx={{ width: "80%" }}
             size="small"
@@ -48,7 +50,7 @@ function AdvancedSearch({ querry, set }: { querry: string, set: Dispatch, enterH
 
 export default function Search() {
     const [_items, setItems] = React.useContext(ItemListContext);
-    const [_loading, setLoading] = React.useContext(LoadingContext);
+    const [loading, setLoading] = React.useContext(LoadingContext);
     const [isAdvanced, setIsAdvanced] = React.useState<boolean>(false)
     const [valid, setValid] = React.useState<boolean>(false)
     const [querry, setQuerry] = React.useState<string>('')
@@ -75,8 +77,8 @@ export default function Search() {
                 <AdvancedSearch querry={querry} set={setQuerry} enterHandler={handleSearchRequest} /> :
                 <BaseSearch />}
 
-            <IconButton disabled={!valid} onClick={handleSearchRequest}><SearchIcon /></IconButton>
-            <Button onClick={() => setIsAdvanced(!isAdvanced)} variant="text" size="small">
+            <IconButton disabled={loading || !valid} onClick={handleSearchRequest} ><SearchIcon /></IconButton>
+            <Button disabled={loading} onClick={() => setIsAdvanced(!isAdvanced)} variant="text" size="small">
                 {isAdvanced ? "Базовый" : "Расширенный"}
             </Button>
         </Box>
