@@ -1,12 +1,12 @@
 import * as React from 'react';
+import axios from "axios";
 // MUI
 import TextField from "@mui/material/TextField"
 import Button from "@mui/material/Button"
 import SearchIcon from '@mui/icons-material/Search';
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
-
-import axios from "axios";
+// 
 import { ItemListContext, LoadingContext } from "../../data/context";
 
 
@@ -14,6 +14,7 @@ function validIql(iql: string): boolean {
     return false
 }
 
+import { API_URL } from "../../App";
 
 function BaseSearch() {
     return (
@@ -62,7 +63,7 @@ export default function Search() {
 
     const handleSearchRequest = () => {
         setLoading(true);
-        axios.post("http://127.0.0.1:8000/", { querry: querry })
+        axios.post(`${API_URL}/getList/`, { querry: querry })
             .then((respons) => {
                 setItems(respons.data.items ? respons.data.items : []);
             })

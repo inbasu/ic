@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Link } from "react-router";
 
 import Table from "@mui/material/Table";
 import TableContainer from "@mui/material/TableContainer";
@@ -7,7 +8,6 @@ import Paper from "@mui/material/Paper";
 import { TableCell } from '@mui/material';
 import { Item } from '../../data/schemas';
 import { CollumnContext, ItemListContext } from '../../data/context';
-
 function ItemRow({ item }: { item: Item }) {
     const [cols, _setCols] = React.useContext(CollumnContext);
 
@@ -15,7 +15,17 @@ function ItemRow({ item }: { item: Item }) {
         <TableRow>
             {item.attrs.map((attr) => {
                 if (cols.get(attr.name)) {
-                    return (<TableCell>{attr.values[0]?.label ? attr.values[0]?.label : "null"}</TableCell>)
+                    if (attr.name == "Key" || attr.name == "Name") {
+                        return (<TableCell>
+                            <Link to={{
+                                pathname: `/${attr.values[0]?.label}`,
+                            }}>
+                                {attr.values[0]?.label ? attr.values[0]?.label : "null"}
+                            </Link>
+                        </TableCell>)
+                    } else {
+                        return (<TableCell>{attr.values[0]?.label ? attr.values[0]?.label : "null"}</TableCell>)
+                    }
                 }
             })}
         </TableRow>
