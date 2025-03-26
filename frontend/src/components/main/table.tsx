@@ -15,7 +15,7 @@ function ItemRow({ item }: { item: Item }) {
         <TableRow>
             {item.attrs.map((attr) => {
                 if (cols.get(attr.name)) {
-                    if (attr.name == "Key" || attr.name == "Name") {
+                    if (attr.name == "Key") {
                         return (<TableCell>
                             <Link to={{
                                 pathname: `/${attr.values[0]?.label}`,

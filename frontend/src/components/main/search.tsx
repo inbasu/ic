@@ -56,14 +56,12 @@ export default function Search() {
     const [valid, setValid] = React.useState<boolean>(false)
     const [querry, setQuerry] = React.useContext(QuerryContext)
 
-
     React.useEffect(() => {
         setValid(true);
     }, [isAdvanced, querry])
 
     React.useEffect(() => {
         if (querry) {
-            console.log(querry)
             handleSearchRequest();
         }
     }, [])

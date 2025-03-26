@@ -17,7 +17,7 @@ export default function Main() {
     const [loading, setLoading] = React.useState<boolean>(false);
     const [querry, setQuerry] = React.useState<string>('');
 
-
+    console.log(querry)
 
     return (
         <Box sx={{ width: "100%", height: '100vh', top: "0" }}>
