@@ -6,7 +6,7 @@ import Search from "../components/main/search";
 import SearchResultTable from "../components/main/table";
 import CollumnFilter from "../components/main/filter";
 
-import { CollumnContext, ItemListContext, LoadingContext } from '../data/context';
+import { CollumnContext, ItemListContext, LoadingContext, QuerryContext } from '../data/context';
 import { Item } from '../data/schemas';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Box } from '@mui/material';
@@ -15,7 +15,7 @@ export default function Main() {
     const [filters, setFilters] = React.useState<Map<string, boolean>>(new Map([["Key", true], ["Name", true], ["Store", false], ["Location", false], ["Serial No", false]]));
     const [items, setItems] = React.useState<Array<Item>>([]);
     const [loading, setLoading] = React.useState<boolean>(false);
-
+    const [querry, setQuerry] = React.useState<string>('');
 
 
 
@@ -25,7 +25,9 @@ export default function Main() {
                 <Grid size="grow" sx={{ textAlign: "left" }}>
                     <LoadingContext.Provider value={[loading, setLoading]}>
                         <ItemListContext.Provider value={[items, setItems]}>
-                            <Search />
+                            <QuerryContext.Provider value={[querry, setQuerry]}>
+                                <Search />
+                            </QuerryContext.Provider>
                         </ItemListContext.Provider>
                     </LoadingContext.Provider>
                 </Grid>

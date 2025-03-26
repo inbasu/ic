@@ -7,14 +7,14 @@ import SearchIcon from '@mui/icons-material/Search';
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 // 
-import { ItemListContext, LoadingContext } from "../../data/context";
+import { API_URL } from "../../App";
+import { ItemListContext, LoadingContext, QuerryContext } from "../../data/context";
 
 
 function validIql(iql: string): boolean {
     return false
 }
 
-import { API_URL } from "../../App";
 
 function BaseSearch() {
     return (
@@ -54,12 +54,19 @@ export default function Search() {
     const [loading, setLoading] = React.useContext(LoadingContext);
     const [isAdvanced, setIsAdvanced] = React.useState<boolean>(false)
     const [valid, setValid] = React.useState<boolean>(false)
-    const [querry, setQuerry] = React.useState<string>('')
+    const [querry, setQuerry] = React.useContext(QuerryContext)
 
 
     React.useEffect(() => {
-        setValid(true)
+        setValid(true);
     }, [isAdvanced, querry])
+
+    React.useEffect(() => {
+        if (querry) {
+            console.log(querry)
+            handleSearchRequest();
+        }
+    }, [])
 
     const handleSearchRequest = () => {
         setLoading(true);
