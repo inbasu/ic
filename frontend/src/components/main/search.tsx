@@ -24,7 +24,7 @@ function BaseSearch() {
         />)
 }
 
-function AdvancedSearch({ querry, set }: { querry: string, set: Dispatch }) {
+function AdvancedSearch({ querry, set }: { querry: string, set: Dispatch, enterHandler: Function }) {
     return (
         <TextField
             id="advanced-search-bar"
@@ -33,6 +33,14 @@ function AdvancedSearch({ querry, set }: { querry: string, set: Dispatch }) {
             variant="standard"
             value={querry}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => { set(event.target.value) }}
+            inputProps={{
+                onKeyPress: (event) => {
+                    if (event.key === "Enter") {
+                        enterHandler();
+                        event.preventDefault();
+                    }
+                }
+            }}
         />
     )
 }
@@ -64,7 +72,7 @@ export default function Search() {
     return (
         <Box sx={{ flexGrow: 1, flexWrap: "nowrap" }}>
             {isAdvanced ?
-                <AdvancedSearch querry={querry} set={setQuerry} /> :
+                <AdvancedSearch querry={querry} set={setQuerry} enterHandler={handleSearchRequest} /> :
                 <BaseSearch />}
 
             <IconButton disabled={!valid} onClick={handleSearchRequest}><SearchIcon /></IconButton>
