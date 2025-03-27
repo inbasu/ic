@@ -12,6 +12,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 import { API_URL } from "../App";
 import { Item } from '../data/schemas';
+import { ItemContent } from '../data/context';
 
 export default function ItemCard() {
     const { key } = useParams();
@@ -30,14 +31,15 @@ export default function ItemCard() {
 
     return (
         <>
-            {item &&
-                <Box>
+            <ItemContent.Provider value={[item, setItem]}>
+                {item &&
+                    <Box>
 
-                    <IconButton component={Link} to="/" ><ArrowBackIcon /></IconButton>
-                    <h3>{item.label}</h3>
-                    <ItemTable item={item} />
-                </Box>
-            }
+                        <IconButton component={Link} to="/" ><ArrowBackIcon /></IconButton>
+                        <ItemTable />
+                    </Box>
+                }
+            </ItemContent.Provider >
 
             {loading && <CircularProgress size={'12vh'} sx={{ position: "absolute", top: "42vh", left: "-5vh", marginLeft: "50%" }} />}
         </>

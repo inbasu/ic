@@ -16,7 +16,7 @@ function validIql(iql: string): boolean {
 }
 
 
-function BaseSearch() {
+function BaseSearch({ enterHandler }: { enterHandler: Function }) {
     return (
         <TextField
             id="advanced-search-bar"
@@ -25,8 +25,10 @@ function BaseSearch() {
         />)
 }
 
-function AdvancedSearch({ querry, set, enterHandler }: { querry: string, set: Dispatch, enterHandler: Function }) {
+function AdvancedSearch({ enterHandler }: { enterHandler: () => void }) {
+    const [querry, setQuerry] = React.useContext(QuerryContext);
     const [loading, _setLoading] = React.useContext(LoadingContext);
+
     return (
         <TextField
             disabled={loading}
@@ -35,7 +37,7 @@ function AdvancedSearch({ querry, set, enterHandler }: { querry: string, set: Di
             size="small"
             variant="standard"
             value={querry}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => { set(event.target.value) }}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => { setQuerry(event.target.value) }}
             inputProps={{
                 onKeyPress: (event) => {
                     if (event.key === "Enter") {
@@ -49,16 +51,31 @@ function AdvancedSearch({ querry, set, enterHandler }: { querry: string, set: Di
 }
 
 
+
+function search(searchType: string, enterHandler: () => void) {
+    switch (searchType) {
+        case "iql": return (<AdvancedSearch enterHandler={enterHandler} />);
+        case "fzf": return (<BaseSearch enterHandler={enterHandler} />)
+    }
+
+
+
+}
+
+
 export default function Search() {
     const [_items, setItems] = React.useContext(ItemListContext);
     const [loading, setLoading] = React.useContext(LoadingContext);
-    const [isAdvanced, setIsAdvanced] = React.useState<boolean>(false)
-    const [valid, setValid] = React.useState<boolean>(false)
-    const [querry, setQuerry] = React.useContext(QuerryContext)
+    const [querry, _setQuerry] = React.useContext(QuerryContext);
+
+    const [valid, setValid] = React.useState<boolean>(false);
+    const [searchType, setsSearchType] = React.useState<string>('iql')
+
+
 
     React.useEffect(() => {
         setValid(true);
-    }, [isAdvanced, querry])
+    }, [searchType, querry])
 
     React.useEffect(() => {
         if (querry) {
@@ -77,15 +94,18 @@ export default function Search() {
             });
     }
 
+    const handleSwitchSearch = () => {
+
+    }
+
     return (
         <Box sx={{ flexGrow: 1, flexWrap: "nowrap" }}>
-            {isAdvanced ?
-                <AdvancedSearch querry={querry} set={setQuerry} enterHandler={handleSearchRequest} /> :
-                <BaseSearch />}
+            {search(searchType, handleSearchRequest)}
+
 
             <IconButton disabled={loading || !valid} onClick={handleSearchRequest} ><SearchIcon /></IconButton>
-            <Button disabled={loading} onClick={() => setIsAdvanced(!isAdvanced)} variant="text" size="small">
-                {isAdvanced ? "Базовый" : "Расширенный"}
+            <Button disabled={loading} onClick={handleSwitchSearch} variant="text" size="small">
+                {true ? "Базовый" : "Расширенный"}
             </Button>
         </Box>
     )
