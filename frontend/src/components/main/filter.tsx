@@ -42,6 +42,7 @@ function CollumnList() {
 
 export default function CollumnFilter() {
     const [open, setOpen] = React.useState<boolean>(false);
+    const [filters, _setFilters] = React.useContext(CollumnContext);
 
     return (
         <>
@@ -49,7 +50,9 @@ export default function CollumnFilter() {
                 id="filter-button"
                 variant={open ? "contained" : "outlined"}
                 size="small"
-                onClick={() => { setOpen(!open) }}>
+                onClick={() => { setOpen(!open) }}
+                disabled={filters.size === 0}
+            >
                 Столбцы
             </Button>
             {open &&

@@ -8,7 +8,8 @@ import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 // 
 import { API_URL } from "../../App";
-import { ItemListContext, LoadingContext, QuerryContext } from "../../data/context";
+import { CollumnContext, ItemListContext, LoadingContext, QuerryContext } from "../../data/context";
+import { Item } from '../../data/schemas';
 
 
 function validIql(iql: string): boolean {
@@ -67,6 +68,7 @@ export default function Search() {
     const [_items, setItems] = React.useContext(ItemListContext);
     const [loading, setLoading] = React.useContext(LoadingContext);
     const [querry, _setQuerry] = React.useContext(QuerryContext);
+    const [_filters, setFilters] = React.useContext(CollumnContext);
 
     const [valid, setValid] = React.useState<boolean>(false);
     const [searchType, setsSearchType] = React.useState<string>('iql')
@@ -87,7 +89,9 @@ export default function Search() {
         setLoading(true);
         axios.post(`${API_URL}/getList/`, { querry: querry })
             .then((respons) => {
-                setItems(respons.data.items ? respons.data.items : []);
+                const items: Array<Item> = respons.data.items ? respons.data.items : []
+                setItems(items);
+                setFilters(new Map(items[0]?.attrs.map((attr) => [attr.name, (attr.name === "Key" || attr.name, attr.name === "Key") ? true : false])))
             })
             .finally(() => {
                 setLoading(false);
