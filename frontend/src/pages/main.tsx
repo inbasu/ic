@@ -10,6 +10,7 @@ import { CollumnContext, ItemListContext, LoadingContext, QuerryContext } from '
 import { Item } from '../data/schemas';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Box } from '@mui/material';
+import MenuDrawer from '../components/drawer';
 
 export default function Main() {
     const [filters, setFilters] = React.useState<Map<string, boolean>>(new Map());
@@ -20,6 +21,7 @@ export default function Main() {
 
     return (
         <Box sx={{ width: "100%", height: '100vh', top: "0" }}>
+            <MenuDrawer />
             <Grid container sx={{ width: "100%", top: "0" }}>
                 <CollumnContext.Provider value={[filters, setFilters]}>
                     <Grid size="grow" sx={{ textAlign: "left" }}>
