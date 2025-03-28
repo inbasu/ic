@@ -11,7 +11,8 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 // Inner
-import { insightSchemas, Schema } from '../data/schemas'
+import { insightSchemas } from '../data/schemas'
+import { ObjectTypeIdContext, SchemeContext } from "../data/context";
 
 
 const CustomDrawer = styled(MuiDrawer, {})(() => ({
@@ -25,8 +26,8 @@ const CustomDrawer = styled(MuiDrawer, {})(() => ({
 
 
 export default function MenuDrawer() {
-    const [scheme, setScheme] = React.useState<Schema | null>(null); // будет контекстом
-    const [objectTypeId, setObjectTypeId] = React.useState<number | null>(null);
+    const [scheme, setScheme] = React.useContext(SchemeContext); // будет контекстом
+    const [objectTypeId, setObjectTypeId] = React.useContext(ObjectTypeIdContext);
     const [isOpen, setOpen] = React.useState<boolean>(false);
 
     const handleSelectScheme = (event: SelectChangeEvent) => {
